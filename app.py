@@ -1,42 +1,46 @@
-from flask import Flask, request, render_template_string
+from flask import Flask, render_template, request
 import os
+import random
 
 app = Flask(__name__)
 
-html = """
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Cricket AI Predictor</title>
-</head>
-<body style="text-align:center; margin-top:50px;">
-    <h1>🏏 Cricket AI Predictor</h1>
-    <form method="POST">
-        <input type="text" name="team" placeholder="Team name likho" required>
-        <br><br>
-        <button type="submit">Predict</button>
-    </form>
-
-    {% if result %}
-        <h2>{{ result }}</h2>
-    {% endif %}
-</body>
-</html>
-"""
+# Simple AI logic (improved)
+teams_strength = {
+    "india": 90,
+    "australia": 88,
+    "england": 85,
+    "pakistan": 83,
+    "new zealand": 82,
+    "south africa": 84
+}
 
 @app.route("/", methods=["GET", "POST"])
 def home():
-    result = ""
+    result = None
+
     if request.method == "POST":
-        team = request.form.get("team")
+        team = request.form.get("team").lower()
 
-        # Simple AI logic (dummy)
-        if team.lower() == "india":
-            result = "🔥 India jeet sakti hai (80%)"
+        base = teams_strength.get(team, random.randint(60, 75))
+        opponent = random.randint(65, 90)
+
+        win_prob = int((base / (base + opponent)) * 100)
+
+        if win_prob > 60:
+            verdict = "🔥 Strong chance to win"
+        elif win_prob > 45:
+            verdict = "⚖️ Match close hai"
         else:
-            result = f"🤔 {team} ka chance 50% hai"
+            verdict = "😬 Low chance"
 
-    return render_template_string(html, result=result)
+        result = {
+            "team": team.upper(),
+            "prob": win_prob,
+            "verdict": verdict
+        }
+
+    return render_template("index.html", result=result)
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
