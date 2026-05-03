@@ -1,0 +1,11 @@
+team,opponent,team_score,opponent_score,result
+india,australia,300,280,1
+india,england,250,260,0
+csk,mi,180,170,1
+mi,csk,160,180,0
+pakistan,england,270,260,1
+england,india,260,250,1
+india,pakistan,280,260,1
+australia,england,290,270,1
+mi,rcb,190,180,1
+rcb,mi,170,190,0
