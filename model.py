@@ -25,3 +25,8 @@ def predict_match(team, opponent, team_score, opponent_score):
         winner = opponent.upper()
 
     return winner, win_prob
+def explain_prediction(team, opponent, team_score, opponent_score):
+    if team_score > opponent_score:
+        return f"{team.upper()} ka score zyada hai, isliye winning chances high hain."
+    else:
+        return f"{opponent.upper()} ne better perform kiya hai."
